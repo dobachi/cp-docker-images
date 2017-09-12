@@ -34,5 +34,12 @@ RUN echo "===> Installing JDBC, Elasticsearch and Hadoop connectors ..." \
         confluent-kafka-connect-elasticsearch=${CONFLUENT_VERSION}${CONFLUENT_PLATFORM_LABEL}-${CONFLUENT_DEB_VERSION} \
         confluent-kafka-connect-storage-common=${CONFLUENT_VERSION}${CONFLUENT_PLATFORM_LABEL}-${CONFLUENT_DEB_VERSION} \
         confluent-kafka-connect-s3=${CONFLUENT_VERSION}${CONFLUENT_PLATFORM_LABEL}-${CONFLUENT_DEB_VERSION} \
-    && echo "===> Cleaning up ..."  \
+
+RUN echo "===> Downloading kafka-connect-twitter ..."  \
+    && wget https://s3-ap-northeast-1.amazonaws.com/dobashim-pub/kafka-connect-twitter/kafka-connect-twitter.tgz \
+    && tar xvzf kafka-connect-twitter.tgz
+
+COPY kafka-connect-twitter/target/kafka-connect-twitter-0.1-jar-with-dependencies.jar /etc/kafka-connect/jars
+
+RUN echo "===> Cleaning up ..."  \
     && apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/*
